@@ -1,8 +1,13 @@
 const express = require('express')
 const dotenv = require('dotenv')
 require('colors')
+const connectDB = require('./config/db')
 
+// Load env variables
 dotenv.config({ path: './config/config.env'})
+
+// connect to DB
+connectDB()
 
 const app = express()
 
