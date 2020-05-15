@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const Pair = require('../pairs/pairModel')
+const Pair = require('../c_pairs/pairModel')
 
 const CollectionSchema = mongoose.Schema({
   user: {
