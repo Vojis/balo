@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Collection = require('../collections/collectionModel')
 
-const userSchema = mongoose.Schema({
+const UserSchema = mongoose.Schema({
   username: {
     type: String,
     required: [true, 'Please add a name'],
@@ -10,7 +10,7 @@ const userSchema = mongoose.Schema({
     unique: true,
   },
   email: {
-    type: String,
+    type: String, 
     required: [true, 'Please add an email'],
     trim: true,
     match: [
@@ -18,7 +18,11 @@ const userSchema = mongoose.Schema({
       'Please add a valid email'
     ]
   },
-  collections: [Collection]
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  // collections: [Collection]
 })
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('User', UserSchema)
