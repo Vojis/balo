@@ -7,7 +7,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
   const { token } = req.cookies;
 
   if (!token) {
-    return next(ErrorResponse('Not authorized to access this route'), 401);
+    return next(ErrorResponse('Not authorized to access this route', 401));
   }
 
   try {
@@ -16,6 +16,6 @@ exports.protect = asyncHandler(async (req, res, next) => {
     req.user = await User.findById(decoded.id);
     next();
   } catch (error) {
-    return next(ErrorResponse('Not authorized to access this route'), 401);
+    return next(ErrorResponse('Not authorized to access this route', 401));
   }
 });
