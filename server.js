@@ -1,5 +1,6 @@
 const express = require('express')
 const dotenv = require('dotenv')
+const cookieParser = require('cookie-parser')
 require('colors')
 const errorHandler = require('./middleware/errorHandler')
 const connectDB = require('./config/db')
@@ -14,6 +15,7 @@ const userRoutes = require('./c_users/userRoutes')
 
 const app = express()
 app.use(express.json())
+app.use(cookieParser())
 
 // Mount routers
 app.use('/api/v1/users', userRoutes)
