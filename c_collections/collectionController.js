@@ -18,6 +18,20 @@ exports.createCollection = asyncHandler(async (req, res, next) => {
   }
 
   const collection = await Collection.create(req.body);
-
   res.status(200).json({ success: true, data: collection });
+});
+
+exports.getCollections = asyncHandler(async (req, res) => {
+  const collections = await Collection.find({ user: req.user }).select('-user');
+
+  res.status(200).json({ success: true, data: collections, count: collections.length });
+});
+
+exports.getCollection = asyncHandler(async (req, res) => {
+  const collection = await Collection.find({ _id: req.params.id, user: req.user });
+
+  res.status(200).json({
+    success: true,
+    data: collection,
+  });
 });
