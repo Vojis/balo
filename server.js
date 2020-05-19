@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
 require('colors');
 const errorHandler = require('./middleware/errorHandler');
 const connectDB = require('./config/db');
@@ -18,6 +19,7 @@ const pairRoutes = require('./c_pairs/pairRoutes');
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+app.use(helmet());
 
 // Mount routers
 app.use('/api/v1/users', userRoutes);

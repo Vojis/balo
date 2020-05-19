@@ -3,6 +3,9 @@ const asyncHandler = require('../middleware/asyncHandler');
 
 const ErrorResponse = require('../utils/errorResponse');
 
+// @desc    Create a collection
+// @route   POST /api/v1/collections
+// @access  Private
 exports.createCollection = asyncHandler(async (req, res, next) => {
   req.body.user = req.user.id;
   const { name } = req.body;
@@ -21,12 +24,18 @@ exports.createCollection = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true, data: collection });
 });
 
+// @desc    Get all collections for a user
+// @route   POST /api/v1/collections
+// @access  Private
 exports.getCollections = asyncHandler(async (req, res) => {
   const collections = await Collection.find({ user: req.user }).select('-user');
 
   res.status(200).json({ success: true, data: collections, count: collections.length });
 });
 
+// @desc    Get a specific collection
+// @route   POST /api/v1/collections/:id
+// @access  Private
 exports.getCollection = asyncHandler(async (req, res) => {
   const collection = await Collection.find({ _id: req.params.id, user: req.user });
 

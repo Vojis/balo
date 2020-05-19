@@ -1,8 +1,6 @@
-const errorResponse = (message, statusCode) => {
-  return {
-    message,
-    statusCode,
-  }
-}
+const errorResponse = (message, statusCode) => ({
+  message,
+  statusCode,
+});
 
-module.exports = errorResponse
+module.exports = errorResponse;
