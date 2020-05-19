@@ -1,20 +1,25 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const PairSchema = mongoose.Schema({
-  // collection: {
-    // type: mongoose.Schema.ObjectId,
-    // ref: 'data',
-    // required: true,
-  // },
+  languageCollection: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Collection',
+    required: true,
+  },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: true,
+  },
   language1: {
     type: String,
     required: [true, 'Value missing for this key'],
-    maxlength: [500, 'Maximum 500 characters']
+    maxlength: [500, 'Maximum 500 characters'],
   },
   language2: {
     type: String,
     required: [true, 'Value missing for this key'],
-    maxlength: [500, 'Maximum 500 characters']
+    maxlength: [500, 'Maximum 500 characters'],
   },
   bookmarked: {
     type: Boolean,
@@ -24,6 +29,6 @@ const PairSchema = mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-})
+});
 
-module.exports = mongoose.model('Pair', PairSchema)
+module.exports = mongoose.model('Pair', PairSchema);

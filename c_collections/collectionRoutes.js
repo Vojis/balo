@@ -6,8 +6,11 @@ const {
   getCollections,
   getCollection,
 } = require('./collectionController');
+const pairRouter = require('../c_pairs/pairRoutes');
 
 const router = express.Router();
+router.use('/:collectionId/pairs', pairRouter);
+
 
 router
   .route('/')

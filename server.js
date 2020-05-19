@@ -13,6 +13,7 @@ connectDB();
 
 const userRoutes = require('./c_users/userRoutes');
 const collectionRoutes = require('./c_collections/collectionRoutes');
+const pairRoutes = require('./c_pairs/pairRoutes');
 
 const app = express();
 app.use(express.json());
@@ -21,6 +22,7 @@ app.use(cookieParser());
 // Mount routers
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/collections', collectionRoutes);
+app.use('/api/v1/pairs', pairRoutes);
 
 // Error Handler middleware
 app.use(errorHandler);
