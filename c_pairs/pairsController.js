@@ -24,3 +24,16 @@ exports.createPair = asyncHandler(async (req, res, next) => {
     data: pair,
   });
 });
+
+exports.getPairs = asyncHandler(async (req, res) => {
+  const { collectionId } = req.params;
+  const user = req.user.id;
+
+  const pairs = await Pair.find({ languageCollection: collectionId, user });
+
+  res.status(200).json({
+    success: true,
+    data: pairs,
+    count: pairs.length,
+  });
+});
