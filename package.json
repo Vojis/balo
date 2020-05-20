@@ -4,7 +4,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server"
+    "start": "node server",
+    "dev": "nodemon server",
+    "client": "npm start --prefix client",
+    "client-install": "npm i --prefix client"
   },
   "author": "Voja",
   "license": "ISC",
