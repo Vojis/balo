@@ -29,7 +29,7 @@ exports.login = asyncHandler(async (req, res, next) => {
     return next(ErrorResponse('Invalid credentials', 404));
   }
 
-  const passwordsMatch = user.comparePasswords(password);
+  const passwordsMatch = await user.comparePasswords(password);
   if (!passwordsMatch) {
     return next(ErrorResponse('Invalid credentials', 401));
   }
