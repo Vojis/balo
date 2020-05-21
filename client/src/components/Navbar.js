@@ -30,6 +30,7 @@ const Navbar = () => {
   const [login, goLog] = useState(false)
   const [signup, goSign] = useState(false)
   const [loginData, changeLoginData] = useState({ email: null, password: null})
+  const [isLoggedIn, changeLoginStatus] = useState(false)
 
   const baloLogIn = async () => {
     const response = await fetch('/api/v1/users/login', { 
@@ -37,8 +38,24 @@ const Navbar = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(loginData)
     })
+    const responseBody = await response.json()
 
-    console.log(response.json())
+    if (responseBody.success) {
+      changeLoginStatus(true)
+      goLog(false)
+    }
+  }
+
+  const baloLogOut = async () => {
+    const response = await fetch('/api/v1/users/logout', {
+      method: 'GET',
+    })
+    const responseBody = await response.json()
+  
+    if (responseBody.success) {
+      changeLoginData({ email: null, password: null })
+      changeLoginStatus(false)
+    }
   }
 
   return (
@@ -49,17 +66,28 @@ const Navbar = () => {
             <LocalMallIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>Balo</Typography>
-          <Button color="inherit" onClick={() => goLog(!login)}>Login</Button>
-          <LogInDialog 
+          {
+            !isLoggedIn && (
+              <React.Fragment>
+                <Button color="inherit" onClick={() => goLog(!login)}>Login</Button>
+                <Button color="inherit" onClick={() => goSign(!signup)}>Sign up</Button>
+              </React.Fragment>
+            )
+          }
+          {
+            isLoggedIn && (
+              <React.Fragment>
+                <Button color="inherit" onClick={() => baloLogOut()}>Logout</Button>
+              </React.Fragment>
+            )
+          }
+          <LogInDialog
             open={login}
             goLog={goLog}
             loginData={loginData}
             changeLoginData={changeLoginData}
             login={baloLogIn}
           />
-          <Button color="inherit" onClick={() => goSign(!signup)}>
-            Sign up
-          </Button>
           <SignUpDialog 
             open={signup}
             goSign={goSign}
