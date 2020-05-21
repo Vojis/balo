@@ -5,6 +5,7 @@ module.exports = {
   },
   extends: [
     'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
     'airbnb',
   ],
   globals: {
@@ -24,6 +25,6 @@ module.exports = {
   rules: {
     'react/jsx-filename-extension': 0,
     'react/prop-types': 0,
-    'react/jsx-fragments': 0
+    'react/jsx-fragments': 0,
   },
 };

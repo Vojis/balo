@@ -5,11 +5,9 @@ import * as serviceWorker from './serviceWorker';
 import GlobalStyleProvider from './GlobalStyleProvider';
 
 ReactDOM.render(
-  <React.StrictMode>
     <GlobalStyleProvider>
       <AppContainer />
-    </GlobalStyleProvider>
-  </React.StrictMode>,
+    </GlobalStyleProvider>,
   document.getElementById('root'),
 );
 
