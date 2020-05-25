@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const getRandomNumber = require('../utils/randomNumber');
 
 const CollectionSchema = mongoose.Schema({
   user: {
@@ -11,6 +12,11 @@ const CollectionSchema = mongoose.Schema({
     required: [true, 'Please add a name'],
     maxlength: [20, 'Collection name can have up to 20 characters'],
     trim: true,
+  },
+  colorKey: {
+    type: Number,
+    default: getRandomNumber,
+    required: true,
   },
   createdAt: {
     type: Date,

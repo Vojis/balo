@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import LocalMallIcon from '@material-ui/icons/LocalMall';
 import LogInDialog from './LogInDialog';
 import SignUpDialog from './SignUpDialog';
+import LoginStatus from '../utils/LoginContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,13 +25,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = () => {
+const Navbar = ({ changeLoginStatus }) => {
   const classes = useStyles();
+  const context = useContext(LoginStatus)
+  const {isLoggedIn} = context 
 
-  const [login, goLog] = useState(false)
-  const [signup, goSign] = useState(false)
-  const [loginData, changeLoginData] = useState({ email: null, password: null})
-  const [isLoggedIn, changeLoginStatus] = useState(false)
+  const [loginData, changeLoginData] = useState({ email: null, password: null })
+  const [loginDialog, openLoginDialog] = useState(false)
+  const [signupDialog, openSignupDialog] = useState(false)
+  // const [isLoggedIn, changeLoginStatus] = useState(userLoggedIn())
 
   const baloLogIn = async () => {
     const response = await fetch('/api/v1/users/login', { 
@@ -42,7 +45,7 @@ const Navbar = () => {
 
     if (responseBody.success) {
       changeLoginStatus(true)
-      goLog(false)
+      openLoginDialog(false)
     }
   }
 
@@ -53,8 +56,8 @@ const Navbar = () => {
     const responseBody = await response.json()
   
     if (responseBody.success) {
-      changeLoginData({ email: null, password: null })
       changeLoginStatus(false)
+      changeLoginData({ email: null, password: null })
     }
   }
 
@@ -69,8 +72,8 @@ const Navbar = () => {
           {
             !isLoggedIn && (
               <React.Fragment>
-                <Button color="inherit" onClick={() => goLog(!login)}>Login</Button>
-                <Button color="inherit" onClick={() => goSign(!signup)}>Sign up</Button>
+                <Button color="inherit" onClick={() => openLoginDialog(!loginDialog)}>Login</Button>
+                <Button color="inherit" onClick={() => signupDialog(!signupDialog)}>Sign up</Button>
               </React.Fragment>
             )
           }
@@ -82,15 +85,15 @@ const Navbar = () => {
             )
           }
           <LogInDialog
-            open={login}
-            goLog={goLog}
+            open={loginDialog}
+            goLog={openLoginDialog}
             loginData={loginData}
             changeLoginData={changeLoginData}
             login={baloLogIn}
           />
           <SignUpDialog 
-            open={signup}
-            goSign={goSign}
+            open={signupDialog}
+            goSign={openSignupDialog}
           />
         </Toolbar>
       </AppBar>

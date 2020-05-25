@@ -10,7 +10,7 @@ const sendJwtToken = (user, statusCode, res) => {
 
   const options = {
     expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE * 30 * 24 * 60 * 1000),
-    httpOnly: true,
+    // httpOnly: true,
   };
 
   res
