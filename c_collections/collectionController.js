@@ -24,6 +24,31 @@ exports.createCollection = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true, data: collection });
 });
 
+// @desc    Update a collection
+// @route   PUT /api/v1/collections/:id
+// @access  Private
+exports.updateCollection = asyncHandler(async (req, res, next) => {
+  req.body.user = req.user.id;
+  const { name } = req.body;
+  const { id } = req.params;
+
+  if (!name) {
+    return next(ErrorResponse('Please add a name', 400));
+  }
+
+  let collection = await Collection.findById(id);
+  if (!collection) {
+    return next(ErrorResponse('Collection does not exist', 400));
+  }
+
+  collection = await Collection.findByIdAndUpdate(id, { name }, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(200).json({ success: true, data: collection });
+});
+
 // @desc    Get all collections for a user
 // @route   POST /api/v1/collections
 // @access  Private

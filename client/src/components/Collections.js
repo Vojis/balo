@@ -69,15 +69,17 @@ const Collections = () => {
   // state
   const [collections, getCollections] = useState([])
   const [newCollection, nameNewCollection] = useState('')
+  const [counter, changeCounter] = useState(0)
 
   useEffect( () => {
     if (context.isLoggedIn) {
        (async function() {
         const responseBody = await fetchCollections()
+         console.log('responseBody', responseBody.data)
         getCollections(responseBody.data || [])
       })()
     }
-  }, [context.isLoggedIn])  
+  }, [counter])  
 
   const createCollection = async () => {
     const collection = await fetch('/api/v1/collections', {
@@ -121,6 +123,8 @@ const Collections = () => {
                   <Collection
                     name={collection.name}
                     colorKey={collection.colorKey}
+                    collectionId={collection._id}
+                    onUpdate={() => changeCounter(counter + 1)}
                   />
                 </Grid>
               ))

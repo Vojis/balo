@@ -3,6 +3,7 @@ const express = require('express');
 const { protect } = require('../middleware/auth');
 const {
   createCollection,
+  updateCollection,
   getCollections,
   getCollection,
 } = require('./collectionController');
@@ -19,6 +20,7 @@ router
 
 router
   .route('/:id')
-  .get(protect, getCollection);
+  .get(protect, getCollection)
+  .put(protect, updateCollection);
 
 module.exports = router;
