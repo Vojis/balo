@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -33,7 +33,6 @@ const Navbar = ({ changeLoginStatus }) => {
   const [loginData, changeLoginData] = useState({ email: null, password: null })
   const [loginDialog, openLoginDialog] = useState(false)
   const [signupDialog, openSignupDialog] = useState(false)
-  // const [isLoggedIn, changeLoginStatus] = useState(userLoggedIn())
 
   const baloLogIn = async () => {
     const response = await fetch('/api/v1/users/login', { 
@@ -50,9 +49,7 @@ const Navbar = ({ changeLoginStatus }) => {
   }
 
   const baloLogOut = async () => {
-    const response = await fetch('/api/v1/users/logout', {
-      method: 'GET',
-    })
+    const response = await fetch('/api/v1/users/logout', { method: 'GET' })
     const responseBody = await response.json()
   
     if (responseBody.success) {
@@ -77,12 +74,8 @@ const Navbar = ({ changeLoginStatus }) => {
               </React.Fragment>
             )
           }
-          {
-            isLoggedIn && (
-              <React.Fragment>
-                <Button color="inherit" onClick={() => baloLogOut()}>Logout</Button>
-              </React.Fragment>
-            )
+          { 
+            isLoggedIn && <Button color="inherit" onClick={() => baloLogOut()}>Logout</Button> 
           }
           <LogInDialog
             open={loginDialog}

@@ -2,50 +2,39 @@ import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-const LogInDialog = ({ 
-  open,
-  goLog,
-  loginData,
-  changeLoginData,
-  login,
-}) => (
+const LogInDialog = ({ open, goLog, loginData, changeLoginData, login }) => (
   <Dialog open={open} fullWidth>
-    <DialogTitle id="form-dialog-title">Balo Log In</DialogTitle>
+    <DialogTitle>Balo Log In</DialogTitle>
     <DialogContent>
       <TextField
-        id="email"
-        label="Email address"
-        placeholder="Your email address"
-        type="email"
+        id='email'
+        label='Email address'
+        placeholder='Your email address'
+        type='email'
         fullWidth
         required
         defaultValue={loginData.email}
-        onBlur={e => changeLoginData({ ...loginData, email: e.target.value})}
+        onBlur={e => changeLoginData({ ...loginData, email: e.target.value })}
       />
       <TextField
-        id="password"
-        label="Password"
-        placeholder="Your password"
-        type="password"
+        id='password'
+        label='Password'
+        placeholder='Your password'
+        type='password'
         fullWidth
-        margin="normal"
+        margin='normal'
         required
         defaultValue={loginData.password}
         onBlur={e => changeLoginData({ ...loginData, password: e.target.value })}
       />
     </DialogContent>
     <DialogActions>
-      <Button onClick={() => goLog(!open)} color="primary">
-        Cancel
-      </Button>
-      <Button onClick={() => login()} color="primary">
-        Login
-      </Button>
+      <Button onClick={() => goLog(!open)} color='primary'>Cancel</Button>
+      <Button onClick={() => login()} color='primary'>Login</Button>
     </DialogActions>
   </Dialog>
 )

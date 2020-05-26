@@ -5,18 +5,27 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import FiberNewIcon from '@material-ui/icons/FiberNew';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 import LoginStatus from '../utils/LoginContext'
 import Collection from './Collection'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   title: {
     color: '#fff',
   },
   button: {
     background: '#fff',
     textTransform: 'none',
-    margin: '20px 0'
+    marginTop: 5,
+    color: theme.colors.darkPurple,
+    weight: 800,
+    '&:disabled': {
+      backgroundColor: '#fff !important',
+    },
+    '&:hover': {
+      backgroundColor: theme.colors.purpleish
+    }
   },
   subtitle: {
     color: '#fff',
@@ -32,6 +41,19 @@ const useStyles = makeStyles(() => ({
   noCollectionContainer: {
     display: 'flex',
     alignItems: 'flex-end',
+  },
+  input: {
+    color: '#fff',
+  },
+  notchedOutline: {
+    borderWidth: '1px',
+    borderColor: 'green !important'
+  },
+  label: {
+    color: `${theme.colors.purpleish} !important`,
+  },
+  createNewCollectionContainer: {
+    marginTop: 30,
   }
 }))
 
@@ -44,15 +66,14 @@ const Collections = () => {
   const classes = useStyles()
   const context = useContext(LoginStatus)
 
-  // State
+  // state
   const [collections, getCollections] = useState([])
   const [newCollection, nameNewCollection] = useState('')
 
   useEffect( () => {
     if (context.isLoggedIn) {
-       (async function fetchCollections (){
-        const response = await fetch('/api/v1/collections')
-        const responseBody = await response.json()
+       (async function() {
+        const responseBody = await fetchCollections()
         getCollections(responseBody.data || [])
       })()
     }
@@ -62,11 +83,10 @@ const Collections = () => {
     const collection = await fetch('/api/v1/collections', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({name: newCollection})
+      body: JSON.stringify({ name: newCollection })
     })
 
     const response = await collection.json()
-
     if (response.success) {
       nameNewCollection('')
       const collections = await fetchCollections()
@@ -97,7 +117,7 @@ const Collections = () => {
           <Grid container spacing={4}>
             {
               collections.map(collection => (
-                <Grid item md={3} xs={2} key={collection._id}>
+                <Grid item lg={3} sm={6} xs={12} key={collection._id}>
                   <Collection
                     name={collection.name}
                     colorKey={collection.colorKey}
@@ -109,14 +129,21 @@ const Collections = () => {
         </div>
       }
 
-      <div style={{ marginTop: 10 }}>
+      <div className={classes.createNewCollectionContainer}>
         <TextField
-          id="collection"
-          label="Collection"
-          placeholder="Collection name"
-          type="text"
+          id='collection'
+          label='New collection'
+          placeholder='Collection name'
+          type='text'
           onChange={onChange}
           value={newCollection}
+          InputProps={{
+            classes: { root: classes.input },
+            disableUnderline: true,
+          }}
+          InputLabelProps={{
+            classes: { root: classes.label, focused: classes.label },
+          }}
         />
       </div>
       <Button 
@@ -124,6 +151,7 @@ const Collections = () => {
         variant='contained' 
         className={classes.button}
         onClick={createCollection}
+        endIcon={<CloudUploadIcon />}
       >
         Create new collection
       </Button>

@@ -5,19 +5,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-
-const colors = [
-  '#584ec2',
-  '#6a61c8',
-  '#7c74cf',
-  '#8e87d6',
-  '#8794d6',
-  '#a287d6'
-]
-
-const getRandomNumber = () => {
-  return Math.floor(Math.random() * Math.floor(6))
-}
+import colors from '../constants/colors'
 
 const useStyles = makeStyles((theme) => ({
   cardHeader: {
@@ -33,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Collection = ({name, colorKey}) => {
-
   const classes = useStyles()
 
   return (
