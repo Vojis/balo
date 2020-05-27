@@ -6,8 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import LocalMallIcon from '@material-ui/icons/LocalMall';
-import LogInDialog from './LogInDialog';
-import SignUpDialog from './SignUpDialog';
+import LogInDialog from './dialogs/LogInDialog';
+import SignUpDialog from './dialogs/SignUpDialog';
 import LoginStatus from '../utils/LoginContext';
 
 const useStyles = makeStyles((theme) => ({

@@ -8,8 +8,10 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
-import EditCollecitonNameDialog from './EditCollectionNameDialog';
+import EditCollectionNameDialog from './dialogs/EditCollectionNameDialog';
+import DeleteDialog from './dialogs/DeleteDialog';
 import colors from '../constants/colors'
 
 const useStyles = makeStyles((theme) => ({
@@ -17,12 +19,18 @@ const useStyles = makeStyles((theme) => ({
     height: 33
   },
   font: {
-    color: '#3b328f',
+    color: theme.colors.darkPurple,
     fontWeight: 800,
   },
   cardActionsContainer: {
     display: 'flex',
     justifyContent: 'space-between'
+  },
+  iconButton: {
+    padding: 4
+  },
+  icon: {
+    color: theme.colors.lightPurple,
   }
 }))
 
@@ -30,7 +38,8 @@ const Collection = ({name, colorKey, collectionId, onUpdate }) => {
   const classes = useStyles()
 
   // state
-  const [isDialogOpen, openDialog] = useState(false)
+  const [isEditDialogOpen, openEditDialog] = useState(false)
+  const [isDeleteDialogOpen, openDeleteDialog] = useState(false)
 
   return (
     <Card className={classes.card}>
@@ -44,17 +53,33 @@ const Collection = ({name, colorKey, collectionId, onUpdate }) => {
         <Typography className={classes.font}>
           {name}
         </Typography>
-        <Tooltip title='Edit collection name' enterDelay={500}>
-          <IconButton aria-label='edit' onClick={() => openDialog(!isDialogOpen)}>
-            <EditIcon fontSize='small' />
-          </IconButton>
-        </Tooltip>
+        <span>
+          <Tooltip title='Edit collection name' enterDelay={500}>
+            <IconButton className={classes.iconButton} aria-label='edit' onClick={() => openEditDialog(!isEditDialogOpen)}>
+              <EditIcon fontSize='small' className={classes.icon} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title='Delete collection' enterDelay={500}>
+            <IconButton className={classes.iconButton} aria-label='delete' onClick={() => openDeleteDialog(!isDeleteDialogOpen)}>
+              <DeleteIcon fontSize='small' className={classes.icon} />
+            </IconButton>
+          </Tooltip>
+        </span>
       </CardActions>
-      <EditCollecitonNameDialog 
+      
+      {/* Dialogs */}
+      <EditCollectionNameDialog 
         name={name}
         collectionId={collectionId}
-        open={isDialogOpen}
-        openDialog={openDialog}
+        open={isEditDialogOpen}
+        openDialog={openEditDialog}
+        onUpdate={onUpdate}
+      />
+      <DeleteDialog
+        name={name}
+        collectionId={collectionId}
+        open={isDeleteDialogOpen}
+        openDialog={openDeleteDialog}
         onUpdate={onUpdate}
       />
     </Card>

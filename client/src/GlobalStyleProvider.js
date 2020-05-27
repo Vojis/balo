@@ -7,7 +7,9 @@ const theme = createMuiTheme({
   },
   colors: {
     darkPurple: '#3b328f',
-    purpleish: '#dbd0ef'
+    lightPurple: '#b2ade3',
+    purpleish: '#dbd0ef',
+    navbarPurple: '#7c74cf'
   },
   spacing: 8,
 });

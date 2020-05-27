@@ -69,3 +69,16 @@ exports.getCollection = asyncHandler(async (req, res) => {
     data: collection,
   });
 });
+
+// @desc    Delete a collection
+// @route   DELETE /api/v1/collections/:id
+// @access  Private
+exports.deleteCollection = asyncHandler(async (req, res) => {
+  // todo: delete all pairs related to this collection
+  await Collection.findByIdAndDelete({ _id: req.params.id });
+
+  res.status(200).json({
+    success: true,
+    data: {},
+  });
+});
