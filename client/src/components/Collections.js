@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -7,7 +7,6 @@ import Grid from '@material-ui/core/Grid';
 import FiberNewIcon from '@material-ui/icons/FiberNew';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
-import LoginStatus from '../utils/LoginContext'
 import Collection from './Collection'
 
 const useStyles = makeStyles((theme) => ({
@@ -64,21 +63,17 @@ const fetchCollections = async () => {
 
 const Collections = () => {
   const classes = useStyles()
-  const context = useContext(LoginStatus)
 
   // state
   const [collections, getCollections] = useState([])
   const [newCollection, nameNewCollection] = useState('')
   const [counter, changeCounter] = useState(0)
 
-  useEffect( () => {
-    if (context.isLoggedIn) {
-       (async function() {
-        const responseBody = await fetchCollections()
-         console.log('responseBody', responseBody.data)
-        getCollections(responseBody.data || [])
-      })()
-    }
+  useEffect(() => {
+    (async function() {
+      const responseBody = await fetchCollections()
+      getCollections(responseBody.data || [])
+    })()
   }, [counter])  
 
   const createCollection = async () => {
