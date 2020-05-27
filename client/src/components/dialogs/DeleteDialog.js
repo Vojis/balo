@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -7,9 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 const DeleteCollectionDialog = ({ open, name, collectionId, openDialog, onUpdate }) => {
-  const [inputValue, onChangeInputValue] = useState(name)
-
-  const changeName = async () => {
+  const deleteCollection = async () => {
     const deletedCollection = await fetch(`/api/v1/collections/${collectionId}`, { method: 'DELETE' })
 
     const response = await deletedCollection.json()
@@ -27,7 +25,7 @@ const DeleteCollectionDialog = ({ open, name, collectionId, openDialog, onUpdate
       </DialogContent>
       <DialogActions>
         <Button onClick={() => openDialog(false)} color='primary'>Cancel</Button>
-        <Button onClick={changeName} color='primary' disabled={!inputValue}>
+        <Button onClick={deleteCollection} color='primary'>
           <Typography color='secondary'>Delete</Typography>
         </Button>
       </DialogActions>
