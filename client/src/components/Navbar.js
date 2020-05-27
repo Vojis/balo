@@ -28,12 +28,14 @@ const useStyles = makeStyles((theme) => ({
 const Navbar = ({ changeLoginStatus }) => {
   const classes = useStyles();
   const context = useContext(LoginStatus)
-  const {isLoggedIn} = context 
+  const { isLoggedIn } = context 
 
-  const [loginData, changeLoginData] = useState({ email: null, password: null })
+  // state
   const [loginDialog, openLoginDialog] = useState(false)
   const [signupDialog, openSignupDialog] = useState(false)
-
+  const [loginData, changeLoginData] = useState({ email: '', password: '' })
+  const [signupData, changeSignupData] = useState({ email: '', username: '', password: '' })
+  
   const baloLogIn = async () => {
     const response = await fetch('/api/v1/users/login', { 
       method: 'POST',
@@ -58,6 +60,20 @@ const Navbar = ({ changeLoginStatus }) => {
     }
   }
 
+  const baloSignUp = async () => {
+    const response = await fetch('/api/v1/users/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(signupData)
+    })
+    const responseBody = await response.json()
+
+    if (responseBody.success) {
+      changeLoginStatus(true)
+      openSignupDialog(false)
+    }
+  }
+
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.navbar}>
@@ -70,7 +86,7 @@ const Navbar = ({ changeLoginStatus }) => {
             !isLoggedIn && (
               <React.Fragment>
                 <Button color="inherit" onClick={() => openLoginDialog(!loginDialog)}>Login</Button>
-                <Button color="inherit" onClick={() => signupDialog(!signupDialog)}>Sign up</Button>
+                <Button color="inherit" onClick={() => openSignupDialog(!signupDialog)}>Sign up</Button>
               </React.Fragment>
             )
           }
@@ -87,6 +103,9 @@ const Navbar = ({ changeLoginStatus }) => {
           <SignUpDialog 
             open={signupDialog}
             goSign={openSignupDialog}
+            signupData={signupData}
+            changeSignupData={changeSignupData}
+            signup={baloSignUp}
           />
         </Toolbar>
       </AppBar>

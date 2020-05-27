@@ -3,12 +3,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
-import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import LaunchIcon from '@material-ui/icons/Launch';
 
 import EditCollectionNameDialog from './dialogs/EditCollectionNameDialog';
 import DeleteDialog from './dialogs/DeleteDialog';
@@ -16,7 +16,7 @@ import colors from '../constants/colors'
 
 const useStyles = makeStyles((theme) => ({
   cardHeader: {
-    height: 33
+    height: 66
   },
   font: {
     color: theme.colors.darkPurple,
@@ -31,6 +31,11 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     color: theme.colors.lightPurple,
+  },
+  launch: {
+    paddingLeft: 6,
+    opacity: .1,
+    fontSize: 40,
   }
 }))
 
@@ -43,11 +48,11 @@ const Collection = ({name, colorKey, collectionId, onUpdate }) => {
 
   return (
     <Card className={classes.card}>
-      <CardActionArea>
-        <CardHeader 
-          className={classes.cardHeader} 
-          style={{ background: `linear-gradient(90deg, ${colors[colorKey]} 0%, #b2ade3 100%)`}}
-        />
+      <CardActionArea 
+        className={classes.cardHeader}
+        style={{ background: `linear-gradient(90deg, ${colors[colorKey]} 0%, #b2ade3 100%)` }}
+      >
+        <LaunchIcon className={classes.launch} />
       </CardActionArea>
       <CardActions className={classes.cardActionsContainer}>
         <Typography className={classes.font}>

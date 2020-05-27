@@ -34,7 +34,7 @@ const LogInDialog = ({ open, goLog, loginData, changeLoginData, login }) => (
     </DialogContent>
     <DialogActions>
       <Button onClick={() => goLog(!open)} color='primary'>Cancel</Button>
-      <Button onClick={() => login()} color='primary'>Login</Button>
+      <Button onClick={login} color='primary'>Login</Button>
     </DialogActions>
   </Dialog>
 )
