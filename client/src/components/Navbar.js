@@ -9,6 +9,7 @@ import LocalMallIcon from '@material-ui/icons/LocalMall';
 import LogInDialog from './dialogs/LogInDialog';
 import SignUpDialog from './dialogs/SignUpDialog';
 import LoginStatus from '../utils/LoginContext';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = ({ changeLoginStatus }) => {
+const Navbar = ({ changeLoginStatus, backToCollectionsButton, renderCollectionList }) => {
   const classes = useStyles();
   const context = useContext(LoginStatus)
   const { isLoggedIn } = context 
@@ -82,6 +83,18 @@ const Navbar = ({ changeLoginStatus }) => {
             <LocalMallIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>Balo</Typography>
+          {
+            backToCollectionsButton && (
+              <Button 
+                color="inherit" 
+                onClick={() => renderCollectionList(true)}
+              >
+                <ExitToAppIcon />
+                &nbsp;
+                Collections
+              </Button>
+            )
+          }
           {
             !isLoggedIn && (
               <React.Fragment>

@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import userLoggedIn from './utils/userLoggedIn';
 import LoginStatus from './utils/LoginContext';
 import Collections from './components/Collections';
+import CollectionPairs from './components/CollectionPairs';
 
 const useStyles = makeStyles(() => ({
   mainContainer: {
@@ -31,12 +32,25 @@ const useStyles = makeStyles(() => ({
 
 const AppContainer = () => {
   const classes = useStyles();
+
+  // state
   const [isLoggedIn, changeLoginStatus] = useState(userLoggedIn())
+  const [shouldShowCollections, showCollections] = useState(true)
+  const [collection, changeCollection] = useState({})
+
+  const openCollection = (incomingCollection) => {
+    showCollections(false)
+    changeCollection(incomingCollection)
+  }
 
   return (
     <LoginStatus.Provider value={{ isLoggedIn }}>
       <div className={classes.mainContainer}>
-        <Navbar changeLoginStatus={changeLoginStatus} />
+        <Navbar 
+          changeLoginStatus={changeLoginStatus} 
+          backToCollectionsButton={!shouldShowCollections}
+          renderCollectionList={showCollections}
+        />
         <div className={classnames({
           [classes.baloWelcomeContainer]: true,
           [classes.hideElement]: isLoggedIn,
@@ -51,7 +65,11 @@ const AppContainer = () => {
           [classes.collectionContainer]: true,
           [classes.hideElement]: !isLoggedIn
         })}>
-          <Collections />
+          {
+            shouldShowCollections ? 
+              <Collections openCollection={openCollection} /> :
+              <CollectionPairs collection={collection} />
+          }
         </div>
       </div>
     </LoginStatus.Provider>

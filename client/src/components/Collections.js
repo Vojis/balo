@@ -62,7 +62,7 @@ const fetchCollections = async () => {
   return await response.json()
 }
 
-const Collections = () => {
+const Collections = ({ openCollection }) => {
   const classes = useStyles()
 
   const context = useContext(LoginStatus)
@@ -126,6 +126,7 @@ const Collections = () => {
                     colorKey={collection.colorKey}
                     collectionId={collection._id}
                     onUpdate={() => changeCounter(counter + 1)}
+                    openCollection={() => openCollection(collection)}
                   />
                 </Grid>
               ))

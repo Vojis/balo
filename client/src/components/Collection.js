@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const Collection = ({name, colorKey, collectionId, onUpdate }) => {
+const Collection = ({name, colorKey, collectionId, onUpdate, openCollection }) => {
   const classes = useStyles()
 
   // state
@@ -51,6 +51,7 @@ const Collection = ({name, colorKey, collectionId, onUpdate }) => {
       <CardActionArea 
         className={classes.cardHeader}
         style={{ background: `linear-gradient(90deg, ${colors[colorKey]} 0%, #b2ade3 100%)` }}
+        onClick={openCollection}
       >
         <LaunchIcon className={classes.launch} />
       </CardActionArea>
