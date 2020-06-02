@@ -12,6 +12,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
 import UnfoldLessIcon from '@material-ui/icons/UnfoldLess';
+import FlipCameraAndroidIcon from '@material-ui/icons/FlipCameraAndroid';
 
 const useStyles = makeStyles((theme) => ({
   collectionName: {
@@ -64,6 +65,7 @@ const CollectionPairs = (props) => {
   const [pairData, getPairData] = useState({ language1: '', language2: '' })
   const [expand, changeExpand] = useState({})
   const [expandAll, changeExpandAll] = useState(false)
+  const [switchLanguage, changeSwitchLanguage] = useState(false)
 
   useEffect(() => {
     (async function() {
@@ -133,11 +135,16 @@ const CollectionPairs = (props) => {
             <PostAddIcon className={classes.icon} />
           </IconButton>
         </Typography>
-        <IconButton className={classes.iconButton} onClick={onExpandAll}>
-          {
-            expandAll ? <UnfoldLessIcon className={classes.icon} /> : <UnfoldMoreIcon className={classes.icon} /> 
-          }
-        </IconButton>
+        <span>
+          <IconButton className={classes.iconButton} onClick={() => changeSwitchLanguage(!switchLanguage)}>
+            <FlipCameraAndroidIcon className={classes.icon} />
+          </IconButton>
+          <IconButton className={classes.iconButton} onClick={onExpandAll}>
+            {
+              expandAll ? <UnfoldLessIcon className={classes.icon} /> : <UnfoldMoreIcon className={classes.icon} />
+            }
+          </IconButton>
+        </span>
       </div>
       {
         !pairs.length && (
@@ -153,10 +160,10 @@ const CollectionPairs = (props) => {
             <div style={{ marginTop: 16 }} key={pair._id}>
               <ExpansionPanel expanded={expand[pair._id] || false} onClick={() => expandSingle(pair)}>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography className={classes.heading}>{pair.language2}</Typography>
+                  <Typography className={classes.heading}>{switchLanguage ? pair.language2 : pair.language1}</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                  <Typography>{pair.language1}</Typography>
+                  <Typography>{switchLanguage ? pair.language1 : pair.language2}</Typography>
                 </ExpansionPanelDetails>
               </ExpansionPanel>
             </div>
