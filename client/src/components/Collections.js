@@ -1,31 +1,18 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import FiberNewIcon from '@material-ui/icons/FiberNew';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import LoginStatus from '../utils/LoginContext';
+import IconButton from '@material-ui/core/IconButton';
+import PostAddIcon from '@material-ui/icons/PostAdd';
 
+import LoginStatus from '../utils/LoginContext';
 import Collection from './Collection'
+import CreateCollectionDialog from './dialogs/CreateCollectionDialog';
 
 const useStyles = makeStyles((theme) => ({
   title: {
     color: '#fff',
-  },
-  button: {
-    background: '#fff',
-    textTransform: 'none',
-    marginTop: 5,
-    color: theme.colors.darkPurple,
-    weight: 800,
-    '&:disabled': {
-      backgroundColor: '#fff !important',
-    },
-    '&:hover': {
-      backgroundColor: theme.colors.purpleish
-    }
   },
   subtitle: {
     color: '#fff',
@@ -42,9 +29,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'flex-end',
   },
-  input: {
-    color: '#fff',
-  },
   notchedOutline: {
     borderWidth: '1px',
     borderColor: 'green !important'
@@ -52,9 +36,20 @@ const useStyles = makeStyles((theme) => ({
   label: {
     color: `${theme.colors.purpleish} !important`,
   },
-  createNewCollectionContainer: {
-    marginTop: 30,
-  }
+  iconButton: {
+    marginLeft: 10,
+    padding: 15,
+    backgroundColor: theme.colors.lightPurple,
+    '&:hover': {
+      backgroundColor: theme.colors.navbarPurple,
+      opacity: 1,
+    }
+  },
+  icon: {
+    color: '#fff',
+    fontWeight: 800,
+    fontSize: 24,
+  },
 }))
 
 const fetchCollections = async () => {
@@ -70,8 +65,8 @@ const Collections = ({ openCollection }) => {
 
   // state
   const [collections, getCollections] = useState([])
-  const [newCollection, nameNewCollection] = useState('')
   const [counter, changeCounter] = useState(0)
+  const [isDialogOpen, openDialog] = useState(false)
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -80,32 +75,26 @@ const Collections = ({ openCollection }) => {
         getCollections(responseBody.data || [])
       })()
     }
-  }, [counter, isLoggedIn])  
+  }, [counter, isLoggedIn])
 
-  const createCollection = async () => {
-    const collection = await fetch('/api/v1/collections', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: newCollection })
-    })
-
-    const response = await collection.json()
-    if (response.success) {
-      nameNewCollection('')
-      const collections = await fetchCollections()
-      getCollections(collections.data || [])
-    }
+  const sendCollectionData = (collection) => {
+    return collection
   }
 
-  const onChange = (e) => {
-    const { value } = e.target 
-    nameNewCollection(value)
+  const createCollection = async () => {
+    sendCollectionData()
+    openDialog(false)
+    const collections = await fetchCollections()
+    getCollections(collections.data || [])
   }
 
   return (
     <React.Fragment>
       <Typography variant='h4' className={classes.title}>
         Collections
+        <IconButton className={classes.iconButton} onClick={() => { openDialog(!isDialogOpen) }}>
+          <PostAddIcon className={classes.icon} />
+        </IconButton>
       </Typography>
       {
         !collections.length && (
@@ -135,32 +124,11 @@ const Collections = ({ openCollection }) => {
         </div>
       }
 
-      <div className={classes.createNewCollectionContainer}>
-        <TextField
-          id='collection'
-          label='New collection'
-          placeholder='Collection name'
-          type='text'
-          onChange={onChange}
-          value={newCollection}
-          InputProps={{
-            classes: { root: classes.input },
-            disableUnderline: true,
-          }}
-          InputLabelProps={{
-            classes: { root: classes.label, focused: classes.label },
-          }}
-        />
-      </div>
-      <Button 
-        disabled={!newCollection}
-        variant='contained' 
-        className={classes.button}
-        onClick={createCollection}
-        endIcon={<CloudUploadIcon />}
-      >
-        Create new collection
-      </Button>
+      <CreateCollectionDialog 
+        open={isDialogOpen}
+        openDialog={openDialog}
+        sendCollectionData={createCollection}
+      />
     </React.Fragment>
   )
 }
