@@ -19,7 +19,7 @@ const useStyles = makeStyles(() => ({
     height: 'calc(100vh - 150px)',
   },
   collectionContainer: {
-    padding: '24px'
+    padding: '24px',
   },
   baloImg: {
     height: '350px',

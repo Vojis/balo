@@ -8,11 +8,14 @@ import PairDialog from './dialogs/PairDialog';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
 import UnfoldLessIcon from '@material-ui/icons/UnfoldLess';
 import FlipCameraAndroidIcon from '@material-ui/icons/FlipCameraAndroid';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
   collectionName: {
@@ -47,6 +50,26 @@ const useStyles = makeStyles((theme) => ({
   buttonContainer: {
     display: 'flex',
     justifyContent: 'space-between'
+  },
+  expansionPanelContainer: {
+    marginTop: 24,
+  },
+  panelTranslation: {
+    background: `linear-gradient(90deg, #d6d3f0 0%, #e8e6f6 100%)`,
+    paddingTop: 16,
+    borderBottomLeftRadius: 3,
+    borderBottomRightRadius: 3,
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  pairIcon: {
+    color: theme.colors.navbarPurple,
+    fontSize: 18,
+    transition: 'all 0.3s',
+    '&:hover': {
+      transform: 'scale(1.4)',
+    }
   }
 }))
 
@@ -157,13 +180,25 @@ const CollectionPairs = (props) => {
       {
         Boolean(pairs.length) && (
           pairs.map(pair => (
-            <div style={{ marginTop: 16 }} key={pair._id}>
-              <ExpansionPanel expanded={expand[pair._id] || false} onClick={() => expandSingle(pair)}>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <div className={classes.expansionPanelContainer} key={pair._id}>
+              <ExpansionPanel expanded={expand[pair._id] || false}>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} onClick={() => expandSingle(pair)}>
                   <Typography className={classes.heading}>{switchLanguage ? pair.language2 : pair.language1}</Typography>
                 </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
+                <ExpansionPanelDetails className={classes.panelTranslation}>
                   <Typography>{switchLanguage ? pair.language1 : pair.language2}</Typography>
+                  <span>
+                    <Tooltip title='Delete pair' enterDelay={500}>
+                      <IconButton aria-label='delete' onClick={() => {}}>
+                        <DeleteIcon fontSize='small' className={classes.pairIcon} />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title='Edit pair' enterDelay={500}>
+                      <IconButton aria-label='edit' onClick={() => { }}>
+                        <EditIcon fontSize='small' className={classes.pairIcon} />
+                      </IconButton>
+                    </Tooltip>
+                  </span>
                 </ExpansionPanelDetails>
               </ExpansionPanel>
             </div>
