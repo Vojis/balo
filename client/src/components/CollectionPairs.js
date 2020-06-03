@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import classnames from 'classnames'
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -70,6 +71,9 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       transform: 'scale(1.4)',
     }
+  },
+  noShowButton: {
+    display: 'none'
   }
 }))
 
@@ -89,13 +93,15 @@ const CollectionPairs = (props) => {
   const [expand, changeExpand] = useState({})
   const [expandAll, changeExpandAll] = useState(false)
   const [switchLanguage, changeSwitchLanguage] = useState(false)
+  const [counter, changeCounter] = useState(0)
 
   useEffect(() => {
     (async function() {
       const incomingPairs = await fetchPairs(collection._id)
       getPairs(incomingPairs.data)
     })()
-  })
+    // todo: check why there's an error message if collection._id is missing from the []
+  }, [counter, collection._id])
 
   const onExpandAll = () => {
     let shouldExpand = false
@@ -144,8 +150,26 @@ const CollectionPairs = (props) => {
     
     const pairs = await response.json()
     if (pairs.success) {
+      changeCounter(count => count + 1)
       openDialog(false)
       getPairData({ language1: '', language2: '' })
+    }
+  }
+
+  const deletePair = async (pair) => {
+    const { languageCollection, _id } = pair
+    const response = await fetch(`/api/v1/collections/${languageCollection}/pairs/${_id}`, {
+      method: 'DELETE',
+    })
+    
+    const deletedPair = await response.json()
+    if (deletedPair.success) {
+      changeCounter(count => count + 1)
+
+      if (pairs.length === 1) {
+        changeExpandAll(false)
+        changeExpand({})
+      }
     }
   }
 
@@ -159,10 +183,22 @@ const CollectionPairs = (props) => {
           </IconButton>
         </Typography>
         <span>
-          <IconButton className={classes.iconButton} onClick={() => changeSwitchLanguage(!switchLanguage)}>
+          <IconButton 
+            className={classnames({
+              [classes.iconButton]: true,
+              [classes.noShowButton]: !pairs.length
+            })}
+            onClick={() => changeSwitchLanguage(!switchLanguage)}
+          >
             <FlipCameraAndroidIcon className={classes.icon} />
           </IconButton>
-          <IconButton className={classes.iconButton} onClick={onExpandAll}>
+          <IconButton 
+            className={classnames({
+              [classes.iconButton]: true,
+              [classes.noShowButton]: !pairs.length
+            })}
+            onClick={onExpandAll}
+          >
             {
               expandAll ? <UnfoldLessIcon className={classes.icon} /> : <UnfoldMoreIcon className={classes.icon} />
             }
@@ -189,7 +225,7 @@ const CollectionPairs = (props) => {
                   <Typography>{switchLanguage ? pair.language1 : pair.language2}</Typography>
                   <span>
                     <Tooltip title='Delete pair' enterDelay={500}>
-                      <IconButton aria-label='delete' onClick={() => {}}>
+                      <IconButton aria-label='delete' onClick={() => { deletePair(pair)} }>
                         <DeleteIcon fontSize='small' className={classes.pairIcon} />
                       </IconButton>
                     </Tooltip>

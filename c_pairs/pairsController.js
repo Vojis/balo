@@ -42,3 +42,15 @@ exports.getPairs = asyncHandler(async (req, res) => {
     count: pairs.length,
   });
 });
+
+// @desc    Delete a pair
+// @route   DELETE /api/v1/collections/:collectionId/pairs
+// @access  Private
+exports.deletePair = asyncHandler(async (req, res) => {
+  await Pair.findByIdAndDelete({ _id: req.params.id });
+
+  res.status(200).json({
+    success: true,
+    data: {},
+  });
+});
