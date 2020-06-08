@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 
 const CreateCollectionDialog = ({ open, openDialog, sendCollectionData }) => {
   const [inputValue, onChangeInputValue] = useState('')
+  const [errorMessage, changeErrorMessage] = useState('')
 
   const onChange = (e) => {
     const { value } = e.target
@@ -24,6 +25,8 @@ const CreateCollectionDialog = ({ open, openDialog, sendCollectionData }) => {
     const response = await collection.json()
     if (response.success) {
       sendCollectionData(response)
+    } else {
+      changeErrorMessage(response.error)
     }
   }
 
@@ -40,11 +43,13 @@ const CreateCollectionDialog = ({ open, openDialog, sendCollectionData }) => {
           required
           onChange={onChange}
           autoFocus={true}
+          error={Boolean(errorMessage)}
+          helperText={errorMessage}
         />
       </DialogContent>
       <DialogActions>
         <Button onClick={() => { openDialog(false) }} color='primary'>Cancel</Button>
-        <Button onClick={createCollection} color='primary'>Save</Button>
+        <Button onClick={createCollection} color='primary' disabled={!inputValue}>Save</Button>
       </DialogActions>
     </Dialog>
   )

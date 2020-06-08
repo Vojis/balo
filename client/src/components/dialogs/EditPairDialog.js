@@ -20,7 +20,7 @@ const EditPairDialog = ({
           fullWidth
           required
           defaultValue={pairData.language1}
-          onBlur={e => getPairData({ ...pairData, language1: e.target.value })}
+          onChange={e => getPairData({ ...pairData, language1: e.target.value })}
         />
         <TextField
           label='Translation'
@@ -30,12 +30,12 @@ const EditPairDialog = ({
           margin='normal'
           required
           defaultValue={pairData.language2}
-          onBlur={e => getPairData({ ...pairData, language2: e.target.value })}
+          onChange={e => getPairData({ ...pairData, language2: e.target.value })}
         />
       </DialogContent>
       <DialogActions>
         <Button onClick={() => { shouldEditDialogBeOpen(false) }} color='primary'>Cancel</Button>
-        <Button onClick={onSavePairs} color='primary'>Save</Button>
+        <Button onClick={onSavePairs} color='primary' disabled={!pairData.language1 || !pairData.language2}>Save</Button>
       </DialogActions>
     </Dialog>
   )

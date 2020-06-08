@@ -2,16 +2,9 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const UserSchema = mongoose.Schema({
-  username: {
-    type: String,
-    required: [true, 'Please add a name'],
-    maxlength: [20, 'Username can have up to 20 characters'],
-    trim: true,
-    unique: true,
-  },
   email: {
     type: String,
-    required: [true, 'Please add an email'],
+    required: true,
     trim: true,
     unique: true,
     match: [
@@ -19,9 +12,16 @@ const UserSchema = mongoose.Schema({
       'Please add a valid email',
     ],
   },
+  username: {
+    type: String,
+    required: true,
+    maxlength: [20, 'Username can have up to 20 characters'],
+    trim: true,
+    unique: true,
+  },
   password: {
     type: String,
-    required: [true, 'Please add a password'],
+    required: true,
     minlength: 6,
     select: false,
   },

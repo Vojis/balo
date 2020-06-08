@@ -6,7 +6,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-const LogInDialog = ({ open, goLog, loginData, changeLoginData, login }) => (
+const LogInDialog = ({ open, goLog, loginData, changeLoginData, login, error }) => (
   <Dialog open={open} fullWidth>
     <DialogTitle>Balo Log In</DialogTitle>
     <DialogContent>
@@ -19,6 +19,8 @@ const LogInDialog = ({ open, goLog, loginData, changeLoginData, login }) => (
         required
         defaultValue={loginData.email}
         onBlur={e => changeLoginData({ ...loginData, email: e.target.value })}
+        error={error.status}
+        helperText={error.message}
       />
       <TextField
         id='password'
@@ -30,6 +32,8 @@ const LogInDialog = ({ open, goLog, loginData, changeLoginData, login }) => (
         required
         defaultValue={loginData.password}
         onBlur={e => changeLoginData({ ...loginData, password: e.target.value })}
+        error={error.status}
+        helperText={error.message}
       />
     </DialogContent>
     <DialogActions>

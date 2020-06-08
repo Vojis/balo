@@ -33,6 +33,8 @@ const Navbar = ({ changeLoginStatus, backToCollectionsButton, renderCollectionLi
 
   // state
   const [loginDialog, openLoginDialog] = useState(false)
+  const [loginError, changeLoginError] = useState({ status: false, message: ''})
+  const [signupError, changeSignupError] = useState({ status: false, message: { password: '', email: '', username: '' }})
   const [signupDialog, openSignupDialog] = useState(false)
   const [loginData, changeLoginData] = useState({ email: '', password: '' })
   const [signupData, changeSignupData] = useState({ email: '', username: '', password: '' })
@@ -48,6 +50,8 @@ const Navbar = ({ changeLoginStatus, backToCollectionsButton, renderCollectionLi
     if (responseBody.success) {
       changeLoginStatus(true)
       openLoginDialog(false)
+    } else {
+      changeLoginError({ status: true, message: responseBody.error })
     }
   }
 
@@ -72,6 +76,8 @@ const Navbar = ({ changeLoginStatus, backToCollectionsButton, renderCollectionLi
     if (responseBody.success) {
       changeLoginStatus(true)
       openSignupDialog(false)
+    } else {
+      changeSignupError({ status: true, message: responseBody.error})
     }
   }
 
@@ -112,6 +118,7 @@ const Navbar = ({ changeLoginStatus, backToCollectionsButton, renderCollectionLi
             loginData={loginData}
             changeLoginData={changeLoginData}
             login={baloLogIn}
+            error={loginError}
           />
           <SignUpDialog 
             open={signupDialog}
@@ -119,6 +126,7 @@ const Navbar = ({ changeLoginStatus, backToCollectionsButton, renderCollectionLi
             signupData={signupData}
             changeSignupData={changeSignupData}
             signup={baloSignUp}
+            error={signupError}
           />
         </Toolbar>
       </AppBar>

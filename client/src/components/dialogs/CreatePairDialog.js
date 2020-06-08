@@ -6,10 +6,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-const PairDialog = ({ 
-  open, shouldDialogBeOpen, getPairData, pairData,
-  onSavePairs, pairTitle
+const CreatePairDialog = ({ 
+  open, shouldDialogBeOpen, getPairData, pairData, onSavePairs
 }) => (
+  // todo: show error if input has > 500 characters
   <Dialog open={open} fullWidth maxWidth='md'>
     <DialogTitle>Create a new pair</DialogTitle>
     <DialogContent>
@@ -19,8 +19,7 @@ const PairDialog = ({
         type='text'
         fullWidth
         required
-        // defaultValue={loginData.email}
-        onBlur={e => getPairData({ ...pairData, language1: e.target.value })}
+        onChange={e => getPairData({ ...pairData, language1: e.target.value })}
       />
       <TextField
         label='Translation'
@@ -29,15 +28,14 @@ const PairDialog = ({
         fullWidth
         margin='normal'
         required
-        // defaultValue={loginData.password}
-        onBlur={e => getPairData({ ...pairData, language2: e.target.value })}
+        onChange={e => getPairData({ ...pairData, language2: e.target.value })}
       />
     </DialogContent>
     <DialogActions>
       <Button onClick={() => { shouldDialogBeOpen(false) }} color='primary'>Cancel</Button>
-      <Button onClick={onSavePairs} color='primary'>Save</Button>
+      <Button onClick={onSavePairs} color='primary' disabled={!pairData.language1 || !pairData.language2}>Save</Button>
     </DialogActions>
   </Dialog>
 )
 
-export default PairDialog
+export default CreatePairDialog

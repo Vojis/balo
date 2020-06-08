@@ -6,7 +6,7 @@ const errorHandler = (err, req, res, next) => {
 
   // Mongoose duplicate key
   if (err.code === 11000) {
-    error = errorResponse('Duplicate field value entered', 400);
+    error = errorResponse('This value already exists', 400);
   }
 
   // Mongoose bad ObjectId

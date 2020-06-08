@@ -5,7 +5,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import PeopleIcon from '@material-ui/icons/People';
-import PairDialog from './dialogs/PairDialog';
+import CreatePairDialog from './dialogs/CreatePairDialog';
 import EditPairDialog from './dialogs/EditPairDialog';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -266,7 +266,7 @@ const CollectionPairs = (props) => {
         )
       }
 
-      <PairDialog 
+      <CreatePairDialog 
         open={isDialogOpen}
         shouldDialogBeOpen={openDialog}
         pairData={pairData}

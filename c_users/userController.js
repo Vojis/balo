@@ -7,8 +7,27 @@ const ErrorResponse = require('../utils/errorResponse');
 // @desc    Register a user
 // @route   POST /api/v1/users/register
 // @access  Public
-exports.register = asyncHandler(async (req, res) => {
+exports.register = asyncHandler(async (req, res, next) => {
   const { username, email, password } = req.body;
+
+  const messageObj = {};
+
+  if (!username) {
+    messageObj.username = 'Please add a username';
+  }
+
+  if (!email) {
+    messageObj.email = 'Please add an email';
+  }
+
+  if (!password) {
+    messageObj.password = 'Please add a password';
+  }
+
+  if (!username || !email || !password) {
+    return next(ErrorResponse(messageObj, 400));
+  }
+
   const user = await User.create({ username, email, password });
 
   sendJwtToken(user, 200, res);
@@ -21,7 +40,7 @@ exports.login = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return next(ErrorResponse('Please provide an email and password', 400));
+    return next(ErrorResponse('Please provide an email and/or password', 400));
   }
 
   const user = await User.findOne({ email }).select('+password');

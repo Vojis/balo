@@ -8,6 +8,8 @@ import Button from '@material-ui/core/Button';
 
 const EditCollecitonNameDialog = ({ open, name, collectionId, openDialog, onUpdate }) => {
   const [inputValue, onChangeInputValue] = useState(name)
+  const [errorMessage, changeErrorMessage] = useState('')
+
 
   const onChange = (e) => {
     const {value} = e.target
@@ -25,7 +27,14 @@ const EditCollecitonNameDialog = ({ open, name, collectionId, openDialog, onUpda
     if (response.success) {
       openDialog(false)
       onUpdate()
+    } else {
+      changeErrorMessage(response.error)
     }
+  }
+
+  const onClose = () => {
+    onChangeInputValue(name)
+    openDialog(false)
   }
 
   return (
@@ -42,10 +51,12 @@ const EditCollecitonNameDialog = ({ open, name, collectionId, openDialog, onUpda
           value={inputValue}
           onChange={onChange}
           autoFocus={true}
+          error={Boolean(errorMessage)}
+          helperText={errorMessage}
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => openDialog(false)} color='primary'>Cancel</Button>
+        <Button onClick={onClose} color='primary'>Cancel</Button>
         <Button onClick={changeName} color='primary' disabled={!inputValue}>Save</Button>
       </DialogActions>
     </Dialog>
