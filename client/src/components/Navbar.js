@@ -85,7 +85,12 @@ const Navbar = ({ changeLoginStatus, backToCollectionsButton, renderCollectionLi
     <div className={classes.root}>
       <AppBar position="static" className={classes.navbar}>
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+          <IconButton 
+            edge="start" 
+            className={classes.menuButton} 
+            color="inherit" 
+            onClick={() => renderCollectionList(true)}
+          >
             <LocalMallIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>Balo</Typography>
