@@ -4,6 +4,7 @@ const {
   createPair,
   getPairs,
   deletePair,
+  editPair,
 } = require('./pairsController');
 
 const router = express.Router({ mergeParams: true });
@@ -15,6 +16,7 @@ router
 
 router
   .route('/:id')
+  .put(protect, editPair)
   .delete(protect, deletePair);
 
 module.exports = router;

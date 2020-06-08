@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 
 const PairDialog = ({ 
   open, shouldDialogBeOpen, getPairData, pairData,
-  onSavePairs,
+  onSavePairs, pairTitle
 }) => (
   <Dialog open={open} fullWidth maxWidth='md'>
     <DialogTitle>Create a new pair</DialogTitle>

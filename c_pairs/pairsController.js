@@ -44,7 +44,7 @@ exports.getPairs = asyncHandler(async (req, res) => {
 });
 
 // @desc    Delete a pair
-// @route   DELETE /api/v1/collections/:collectionId/pairs
+// @route   DELETE /api/v1/collections/:collectionId/pairs/:id
 // @access  Private
 exports.deletePair = asyncHandler(async (req, res) => {
   await Pair.findByIdAndDelete({ _id: req.params.id });
@@ -52,5 +52,30 @@ exports.deletePair = asyncHandler(async (req, res) => {
   res.status(200).json({
     success: true,
     data: {},
+  });
+});
+
+// @desc    Edit a pair
+// @route   PUT /api/v1/collections/:collectionId/pairs/:id
+// @access  Private
+exports.editPair = asyncHandler(async (req, res) => {
+  const { language1, language2 } = req.body;
+  const payload = {};
+  if (language1) {
+    payload.language1 = language1;
+  }
+
+  if (language2) {
+    payload.language2 = language2;
+  }
+
+  const pair = await Pair.findByIdAndUpdate({ _id: req.params.id }, payload, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    data: pair,
   });
 });

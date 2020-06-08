@@ -21,7 +21,8 @@ const DeleteCollectionDialog = ({ open, name, collectionId, openDialog, onUpdate
     <Dialog open={open} fullWidth>
       <DialogTitle>Delete</DialogTitle>
       <DialogContent>
-        <Typography>Are you sure you want to delete <b>{name}</b> collection?</Typography>
+        <Typography>Are you sure you want to delete <b>{name}</b> collection and its pairs?</Typography>
+        <Typography>This action is <b>irreversible</b>.</Typography>
       </DialogContent>
       <DialogActions>
         <Button onClick={() => openDialog(false)} color='primary'>Cancel</Button>

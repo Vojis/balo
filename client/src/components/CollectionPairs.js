@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import PeopleIcon from '@material-ui/icons/People';
 import PairDialog from './dialogs/PairDialog';
+import EditPairDialog from './dialogs/EditPairDialog';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -89,7 +90,8 @@ const CollectionPairs = (props) => {
   // state
   const [pairs, getPairs] = useState([])
   const [isDialogOpen, openDialog] = useState(false)
-  const [pairData, getPairData] = useState({ language1: '', language2: '' })
+  const [isEditDialogOpen, openEditDialog] = useState(false)
+  const [pairData, getPairData] = useState({ language1: '', language2: '', pairId: '', languageCollection: '' })
   const [expand, changeExpand] = useState({})
   const [expandAll, changeExpandAll] = useState(false)
   const [switchLanguage, changeSwitchLanguage] = useState(false)
@@ -173,6 +175,28 @@ const CollectionPairs = (props) => {
     }
   }
 
+  const editPair = async (pair) => {
+    const { language1, language2, _id, languageCollection } = pair
+    getPairData({ language1, language2, languageCollection, pairId: _id, })
+    openEditDialog(true)
+  }
+
+  const updatePairs = async () => {
+    const { language1, language2, languageCollection, pairId } = pairData
+    const response = await fetch(`/api/v1/collections/${languageCollection}/pairs/${pairId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ language1, language2 })
+    })
+    const updatedPairs = await response.json()
+    
+    if (updatedPairs.success) {
+      changeCounter(count => count + 1)
+      openEditDialog(false)
+      getPairData({ language1: '', language2: '', pairId: '', languageCollection: '' })
+    }
+  }
+
   return (
     <React.Fragment>
       <div className={classes.buttonContainer}>
@@ -225,12 +249,12 @@ const CollectionPairs = (props) => {
                   <Typography>{switchLanguage ? pair.language1 : pair.language2}</Typography>
                   <span>
                     <Tooltip title='Delete pair' enterDelay={500}>
-                      <IconButton aria-label='delete' onClick={() => { deletePair(pair)} }>
+                      <IconButton aria-label='delete' onClick={() => { deletePair(pair) }}>
                         <DeleteIcon fontSize='small' className={classes.pairIcon} />
                       </IconButton>
                     </Tooltip>
                     <Tooltip title='Edit pair' enterDelay={500}>
-                      <IconButton aria-label='edit' onClick={() => { }}>
+                      <IconButton aria-label='edit' onClick={() => { editPair(pair) }}>
                         <EditIcon fontSize='small' className={classes.pairIcon} />
                       </IconButton>
                     </Tooltip>
@@ -248,6 +272,13 @@ const CollectionPairs = (props) => {
         pairData={pairData}
         getPairData={getPairData}
         onSavePairs={savePairs}
+      />
+      <EditPairDialog 
+        open={isEditDialogOpen}
+        shouldEditDialogBeOpen={openEditDialog}
+        pairData={pairData}
+        getPairData={getPairData}
+        onSavePairs={updatePairs}
       />
     </React.Fragment>
   )

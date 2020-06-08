@@ -1,4 +1,5 @@
 const Collection = require('./collectionModel');
+const Pairs = require('../c_pairs/pairModel');
 const asyncHandler = require('../middleware/asyncHandler');
 
 const ErrorResponse = require('../utils/errorResponse');
@@ -74,8 +75,8 @@ exports.getCollection = asyncHandler(async (req, res) => {
 // @route   DELETE /api/v1/collections/:id
 // @access  Private
 exports.deleteCollection = asyncHandler(async (req, res) => {
-  // todo: delete all pairs related to this collection
   await Collection.findByIdAndDelete({ _id: req.params.id });
+  await Pairs.deleteMany({ languageCollection: req.params.id });
 
   res.status(200).json({
     success: true,
