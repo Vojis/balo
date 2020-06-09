@@ -6,10 +6,15 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
-const DeleteCollectionDialog = ({ open, name, collectionId, openDialog, onDelete }) => {
+const DeleteCollectionDialog = ({ 
+  open,
+  name,
+  collectionId, 
+  openDialog, 
+  onDelete 
+}) => {
   const deleteCollection = async () => {
     const deletedCollection = await fetch(`/api/v1/collections/${collectionId}`, { method: 'DELETE' })
-
     const response = await deletedCollection.json()
     if (response.success) {
       openDialog(false)

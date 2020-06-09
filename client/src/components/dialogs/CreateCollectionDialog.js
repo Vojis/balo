@@ -11,8 +11,7 @@ const CreateCollectionDialog = ({ open, openDialog, sendCollectionData }) => {
   const [errorMessage, changeErrorMessage] = useState('')
 
   const onChange = (e) => {
-    const { value } = e.target
-    onChangeInputValue(value)
+    onChangeInputValue(e.target.value)
   }
 
   const createCollection = async () => {

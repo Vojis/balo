@@ -7,7 +7,11 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 const CreatePairDialog = ({ 
-  open, shouldDialogBeOpen, getPairData, pairData, onSavePairs
+  open,
+  shouldDialogBeOpen,
+  getPairData,
+  pairData, 
+  onSavePairs
 }) => (
   // todo: show error if input has > 500 characters
   <Dialog open={open} fullWidth maxWidth='md'>

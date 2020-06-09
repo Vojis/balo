@@ -6,14 +6,19 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-const EditCollecitonNameDialog = ({ open, name, collectionId, openDialog, onUpdate }) => {
+const EditCollecitonNameDialog = ({ 
+  open,
+  name,
+  collectionId,
+  openDialog,
+  onUpdate
+}) => {
+  // state
   const [inputValue, onChangeInputValue] = useState(name)
   const [errorMessage, changeErrorMessage] = useState('')
 
-
   const onChange = (e) => {
-    const {value} = e.target
-    onChangeInputValue(value)
+    onChangeInputValue(e.target.value)
   }
 
   const changeName = async () => {

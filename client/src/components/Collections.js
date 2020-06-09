@@ -30,13 +30,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'flex-end',
   },
-  notchedOutline: {
-    borderWidth: '1px',
-    borderColor: 'green !important'
-  },
-  label: {
-    color: `${theme.colors.purpleish} !important`,
-  },
   iconButton: {
     marginLeft: 10,
     padding: 15,
@@ -60,7 +53,6 @@ const fetchCollections = async () => {
 
 const Collections = ({ openCollection, shouldFetchCollections }) => {
   const classes = useStyles()
-
   const context = useContext(LoginStatus)
   const { isLoggedIn } = context
 
@@ -89,15 +81,11 @@ const Collections = ({ openCollection, shouldFetchCollections }) => {
     updateCollectionData()
   }
 
-  const onDeleteCollection = async () => {
-    updateCollectionData()
-  }
-
   return (
     <React.Fragment>
       <Typography variant='h4' className={classes.title}>
         Collections
-        <IconButton className={classes.iconButton} onClick={() => { openDialog(!isDialogOpen) }}>
+        <IconButton className={classes.iconButton} onClick={() => {openDialog(!isDialogOpen)}}>
           <PostAddIcon className={classes.icon} />
         </IconButton>
       </Typography>
@@ -120,7 +108,7 @@ const Collections = ({ openCollection, shouldFetchCollections }) => {
                     colorKey={collection.colorKey}
                     collectionId={collection._id}
                     onUpdate={updateCollectionData}
-                    onDelete={onDeleteCollection}
+                    onDelete={updateCollectionData}
                     openCollection={() => openCollection(collection)}
                   />
                 </Grid>
