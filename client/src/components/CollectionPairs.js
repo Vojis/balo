@@ -9,6 +9,7 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Tooltip from '@material-ui/core/Tooltip';
+import Snackbar from '@material-ui/core/Snackbar';
 
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import PeopleIcon from '@material-ui/icons/People';
@@ -18,6 +19,7 @@ import UnfoldLessIcon from '@material-ui/icons/UnfoldLess';
 import FlipCameraAndroidIcon from '@material-ui/icons/FlipCameraAndroid';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import CloseIcon from '@material-ui/icons/Close';
 
 import pairList from '../utils/pairList';
 
@@ -77,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   },
   noShowButton: {
     display: 'none'
-  }
+  },
 }))
 
 const fetchPairs = async (id) => {
@@ -98,6 +100,7 @@ const CollectionPairs = (props) => {
   const [expand, changeExpand] = useState({})
   const [expandAll, changeExpandAll] = useState(false)
   const [switchLanguage, changeSwitchLanguage] = useState(false)
+  const [openSnackbar, changeOpenSnackbar] = useState(false)
 
   useEffect(() => {
     if (pairList[collectionId]) {
@@ -171,6 +174,8 @@ const CollectionPairs = (props) => {
       openDialog(false)
       getPairData({ language1: '', language2: '' })
       updatePairData()
+    } else {
+      changeOpenSnackbar(true)
     }
   }
 
@@ -188,6 +193,8 @@ const CollectionPairs = (props) => {
         changeExpandAll(false)
         changeExpand({})
       }
+    } else {
+      changeOpenSnackbar(true)
     }
   }
 
@@ -204,6 +211,8 @@ const CollectionPairs = (props) => {
       openEditDialog(false)
       getPairData({ language1: '', language2: '', pairId: '', languageCollection: '' })
       updatePairData()
+    } else {
+      changeOpenSnackbar(true)
     }
   }
 
@@ -289,6 +298,19 @@ const CollectionPairs = (props) => {
         pairData={pairData}
         getPairData={getPairData}
         onSavePairs={updatePairs}
+      />
+
+      <Snackbar 
+        severity='error'
+        open={openSnackbar}
+        autoHideDuration={5000}
+        onClose={() => changeOpenSnackbar(false)}
+        message='Something went wrong'
+        action={
+          <IconButton size='small' aria-label='close' color='inherit' onClick={() => changeOpenSnackbar(false)}>
+            <CloseIcon fontSize='small' />
+          </IconButton>
+        }
       />
     </React.Fragment>
   )

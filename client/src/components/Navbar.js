@@ -104,7 +104,7 @@ const Navbar = ({
           {
             backToCollectionsButton && (
               <Button color='inherit' onClick={renderCollections}>
-                <ExitToAppIcon /> Collections
+                <ExitToAppIcon style={{paddingRight: 5}} /> Collections
               </Button>
             )
           }

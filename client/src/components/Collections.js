@@ -2,8 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import FiberNewIcon from '@material-ui/icons/FiberNew';
 import IconButton from '@material-ui/core/IconButton';
+import Snackbar from '@material-ui/core/Snackbar';
+
+import CloseIcon from '@material-ui/icons/Close';
+import FiberNewIcon from '@material-ui/icons/FiberNew';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 
 import LoginStatus from '../utils/LoginContext';
@@ -59,6 +62,7 @@ const Collections = ({ openCollection, shouldFetchCollections }) => {
   // state
   const [collections, getCollections] = useState(collectionList())
   const [isDialogOpen, openDialog] = useState(false)
+  const [openSnackbar, changeOpenSnackbar] = useState(false)
 
   useEffect(() => {
     if (isLoggedIn && shouldFetchCollections) {
@@ -72,8 +76,12 @@ const Collections = ({ openCollection, shouldFetchCollections }) => {
 
   const updateCollectionData = async () => {
     const collections = await fetchCollections()
-    getCollections(collections.data || [])
-    collectionList(collections.data)
+    if (collections.success) {
+      getCollections(collections.data || [])
+      collectionList(collections.data)
+    } else {
+      changeOpenSnackbar(true)
+    }
   }
 
   const createCollection = async () => {
@@ -122,6 +130,19 @@ const Collections = ({ openCollection, shouldFetchCollections }) => {
         open={isDialogOpen}
         openDialog={openDialog}
         sendCollectionData={createCollection}
+      />
+
+      <Snackbar
+        severity='error'
+        open={openSnackbar}
+        autoHideDuration={5000}
+        onClose={() => changeOpenSnackbar(false)}
+        message='Something went wrong'
+        action={
+          <IconButton size='small' aria-label='close' color='inherit' onClick={() => changeOpenSnackbar(false)}>
+            <CloseIcon fontSize='small' />
+          </IconButton>
+        }
       />
     </React.Fragment>
   )
