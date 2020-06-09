@@ -9,6 +9,7 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 import LoginStatus from '../utils/LoginContext';
 import Collection from './Collection'
 import CreateCollectionDialog from './dialogs/CreateCollectionDialog';
+import collectionList from '../utils/collectionList';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -16,14 +17,14 @@ const useStyles = makeStyles((theme) => ({
   },
   subtitle: {
     color: '#fff',
-    marginTop: 16,
+    marginTop: 24,
   },
   whiteIcon: {
     color: '#fff',
     paddingLeft: 5,
   },
   collectionContainer: {
-    marginTop: 16,
+    marginTop: 24,
   },
   noCollectionContainer: {
     display: 'flex',
@@ -57,35 +58,39 @@ const fetchCollections = async () => {
   return await response.json()
 }
 
-const Collections = ({ openCollection }) => {
+const Collections = ({ openCollection, shouldFetchCollections }) => {
   const classes = useStyles()
 
   const context = useContext(LoginStatus)
   const { isLoggedIn } = context
 
   // state
-  const [collections, getCollections] = useState([])
-  const [counter, changeCounter] = useState(0)
+  const [collections, getCollections] = useState(collectionList())
   const [isDialogOpen, openDialog] = useState(false)
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && shouldFetchCollections) {
       (async function () {
         const responseBody = await fetchCollections()
+        collectionList(responseBody.data)
         getCollections(responseBody.data || [])
       })()
     }
-  }, [counter, isLoggedIn])
+  }, [isLoggedIn, shouldFetchCollections])
 
-  const sendCollectionData = (collection) => {
-    return collection
+  const updateCollectionData = async () => {
+    const collections = await fetchCollections()
+    getCollections(collections.data || [])
+    collectionList(collections.data)
   }
 
   const createCollection = async () => {
-    sendCollectionData()
     openDialog(false)
-    const collections = await fetchCollections()
-    getCollections(collections.data || [])
+    updateCollectionData()
+  }
+
+  const onDeleteCollection = async () => {
+    updateCollectionData()
   }
 
   return (
@@ -114,7 +119,8 @@ const Collections = ({ openCollection }) => {
                     name={collection.name}
                     colorKey={collection.colorKey}
                     collectionId={collection._id}
-                    onUpdate={() => changeCounter(counter + 1)}
+                    onUpdate={updateCollectionData}
+                    onDelete={onDeleteCollection}
                     openCollection={() => openCollection(collection)}
                   />
                 </Grid>

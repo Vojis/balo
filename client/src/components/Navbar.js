@@ -26,7 +26,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = ({ changeLoginStatus, backToCollectionsButton, renderCollectionList }) => {
+const Navbar = ({
+  changeLoginStatus,
+  backToCollectionsButton,
+  renderCollectionList,
+  changeFetchCollections,
+ }) => {
   const classes = useStyles();
   const context = useContext(LoginStatus)
   const { isLoggedIn } = context 
@@ -81,6 +86,11 @@ const Navbar = ({ changeLoginStatus, backToCollectionsButton, renderCollectionLi
     }
   }
 
+  const renderCollections = () => {
+    renderCollectionList(true)
+    changeFetchCollections(false)
+  }
+
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.navbar}>
@@ -89,7 +99,7 @@ const Navbar = ({ changeLoginStatus, backToCollectionsButton, renderCollectionLi
             edge="start" 
             className={classes.menuButton} 
             color="inherit" 
-            onClick={() => renderCollectionList(true)}
+            onClick={renderCollections}
           >
             <LocalMallIcon />
           </IconButton>
@@ -98,7 +108,7 @@ const Navbar = ({ changeLoginStatus, backToCollectionsButton, renderCollectionLi
             backToCollectionsButton && (
               <Button 
                 color="inherit" 
-                onClick={() => renderCollectionList(true)}
+                onClick={renderCollections}
               >
                 <ExitToAppIcon />
                 &nbsp;

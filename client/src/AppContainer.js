@@ -37,6 +37,7 @@ const AppContainer = () => {
   const [isLoggedIn, changeLoginStatus] = useState(userLoggedIn())
   const [shouldShowCollections, showCollections] = useState(true)
   const [collection, changeCollection] = useState({})
+  const [shouldFetchCollections, changeFetchCollections] = useState(true)
 
   const openCollection = (incomingCollection) => {
     showCollections(false)
@@ -50,6 +51,7 @@ const AppContainer = () => {
           changeLoginStatus={changeLoginStatus} 
           backToCollectionsButton={!shouldShowCollections}
           renderCollectionList={showCollections}
+          changeFetchCollections={changeFetchCollections}
         />
         <div className={classnames({
           [classes.baloWelcomeContainer]: true,
@@ -67,7 +69,11 @@ const AppContainer = () => {
         })}>
           {
             shouldShowCollections ? 
-              <Collections openCollection={openCollection} /> :
+              <Collections 
+                openCollection={openCollection}
+                shouldFetchCollections={shouldFetchCollections}
+              /> 
+              :
               <CollectionPairs collection={collection} />
           }
         </div>

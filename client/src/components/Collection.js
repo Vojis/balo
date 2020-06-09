@@ -11,7 +11,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import LaunchIcon from '@material-ui/icons/Launch';
 
 import EditCollectionNameDialog from './dialogs/EditCollectionNameDialog';
-import DeleteDialog from './dialogs/DeleteDialog';
+import DeleteDialog from './dialogs/DeleteCollectionDialog';
 import colors from '../constants/colors'
 
 const useStyles = makeStyles((theme) => ({
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const Collection = ({name, colorKey, collectionId, onUpdate, openCollection }) => {
+const Collection = ({ name, colorKey, collectionId, onUpdate, openCollection, onDelete }) => {
   const classes = useStyles()
 
   // state
@@ -86,7 +86,7 @@ const Collection = ({name, colorKey, collectionId, onUpdate, openCollection }) =
         collectionId={collectionId}
         open={isDeleteDialogOpen}
         openDialog={openDeleteDialog}
-        onUpdate={onUpdate}
+        onDelete={onDelete}
       />
     </Card>
   )

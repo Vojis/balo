@@ -18,6 +18,7 @@ import UnfoldLessIcon from '@material-ui/icons/UnfoldLess';
 import FlipCameraAndroidIcon from '@material-ui/icons/FlipCameraAndroid';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import pairList from '../utils/pairList';
 
 const useStyles = makeStyles((theme) => ({
   collectionName: {
@@ -85,6 +86,7 @@ const fetchPairs = async (id) => {
 
 const CollectionPairs = (props) => {
   const { collection } = props 
+  const collectionId = collection._id
   const classes = useStyles()
 
   // state
@@ -97,13 +99,24 @@ const CollectionPairs = (props) => {
   const [switchLanguage, changeSwitchLanguage] = useState(false)
   const [counter, changeCounter] = useState(0)
 
+  const updatePairData = async () => {
+    const incomingPairs = await fetchPairs(collectionId)
+    pairList[collectionId] = incomingPairs.data
+    getPairs(incomingPairs.data)
+  }
+
   useEffect(() => {
-    (async function() {
-      const incomingPairs = await fetchPairs(collection._id)
-      getPairs(incomingPairs.data)
-    })()
-    // todo: check why there's an error message if collection._id is missing from the []
-  }, [counter, collection._id])
+    if (pairList[collectionId]) {
+      getPairs(pairList[collectionId])
+    } else {
+      (async function () {
+        const incomingPairs = await fetchPairs(collectionId)
+        pairList[collectionId] = incomingPairs.data
+        getPairs(incomingPairs.data)
+      })()
+    }
+    // todo: check why there's an error message if collectionId is missing from the []
+  }, [counter, collectionId])
 
   const onExpandAll = () => {
     let shouldExpand = false
@@ -155,6 +168,7 @@ const CollectionPairs = (props) => {
       changeCounter(count => count + 1)
       openDialog(false)
       getPairData({ language1: '', language2: '' })
+      updatePairData()
     }
   }
 
@@ -166,6 +180,7 @@ const CollectionPairs = (props) => {
     
     const deletedPair = await response.json()
     if (deletedPair.success) {
+      updatePairData()
       changeCounter(count => count + 1)
 
       if (pairs.length === 1) {
@@ -194,6 +209,7 @@ const CollectionPairs = (props) => {
       changeCounter(count => count + 1)
       openEditDialog(false)
       getPairData({ language1: '', language2: '', pairId: '', languageCollection: '' })
+      updatePairData()
     }
   }
 
