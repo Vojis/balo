@@ -12,7 +12,7 @@ const SignUpDialog = ({ open, goSign, signupData, changeSignupData, signup, erro
   let passwordLengthError = ''
   
   if (error.message === 'Please add a valid email') {
-    validEmail = 'Please add a valid email'
+    validEmail = error.message
   }
 
   if (error.message === 'This value already exists') {

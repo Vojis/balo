@@ -38,9 +38,18 @@ exports.register = asyncHandler(async (req, res, next) => {
 // @access  Public
 exports.login = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
+  const messageObj = {};
+
+  if (!email) {
+    messageObj.email = 'Please add an email';
+  }
+
+  if (!password) {
+    messageObj.password = 'Please add a password';
+  }
 
   if (!email || !password) {
-    return next(ErrorResponse('Please provide an email and/or password', 400));
+    return next(ErrorResponse(messageObj, 400));
   }
 
   const user = await User.findOne({ email }).select('+password');
