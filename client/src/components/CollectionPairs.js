@@ -170,8 +170,9 @@ const CollectionPairs = (props) => {
     })
     
     const pairs = await response.json()
+    openDialog(false)
+    
     if (pairs.success) {
-      openDialog(false)
       getPairData({ language1: '', language2: '' })
       updatePairData()
     } else {
@@ -206,9 +207,9 @@ const CollectionPairs = (props) => {
       body: JSON.stringify({ language1, language2 })
     })
     const updatedPairs = await response.json()
-    
+    openEditDialog(false)
+
     if (updatedPairs.success) {
-      openEditDialog(false)
       getPairData({ language1: '', language2: '', pairId: '', languageCollection: '' })
       updatePairData()
     } else {

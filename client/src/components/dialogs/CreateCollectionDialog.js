@@ -24,6 +24,7 @@ const CreateCollectionDialog = ({ open, openDialog, sendCollectionData }) => {
     const response = await collection.json()
     if (response.success) {
       sendCollectionData(response)
+      changeErrorMessage('')
     } else {
       changeErrorMessage(response.error)
     }

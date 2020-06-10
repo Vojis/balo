@@ -32,6 +32,7 @@ const EditCollecitonNameDialog = ({
     if (response.success) {
       openDialog(false)
       onUpdate()
+      changeErrorMessage('')
     } else {
       changeErrorMessage(response.error)
     }
