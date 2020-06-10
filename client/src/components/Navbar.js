@@ -83,6 +83,9 @@ const Navbar = ({
     const responseBody = await response.json()
   
     if (responseBody.success) {
+      // workaround not to show back to collections button when
+      // logging out from language pairs page
+      renderCollectionList(true)
       changeLoginStatus(false)
       changeLoginData({ email: null, password: null })
     }
