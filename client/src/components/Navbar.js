@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -11,7 +11,6 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import LogInDialog from './dialogs/LogInDialog';
 import SignUpDialog from './dialogs/SignUpDialog';
-import LoginStatus from '../utils/LoginContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,10 +32,9 @@ const Navbar = ({
   backToCollectionsButton,
   renderCollectionList,
   changeFetchCollections,
+  isLoggedIn
  }) => {
   const classes = useStyles();
-  const context = useContext(LoginStatus)
-  const { isLoggedIn } = context 
 
   // state
   const [loginData, changeLoginData] = useState({ email: '', password: '' })
@@ -52,12 +50,14 @@ const Navbar = ({
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(loginData)
     })
+
     const responseBody = await response.json()
 
     if (responseBody.success) {
       changeLoginStatus(true)
       openLoginDialog(false)
     } else {
+      changeLoginStatus(false)
       changeLoginError({ status: true, message: responseBody.error })
     }
   }

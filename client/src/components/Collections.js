@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -9,7 +9,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import FiberNewIcon from '@material-ui/icons/FiberNew';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 
-import LoginStatus from '../utils/LoginContext';
 import Collection from './Collection'
 import CreateCollectionDialog from './dialogs/CreateCollectionDialog';
 import collectionList from '../utils/collectionList';
@@ -54,10 +53,8 @@ const fetchCollections = async () => {
   return await response.json()
 }
 
-const Collections = ({ openCollection, shouldFetchCollections }) => {
+const Collections = ({ openCollection, shouldFetchCollections, isLoggedIn }) => {
   const classes = useStyles()
-  const context = useContext(LoginStatus)
-  const { isLoggedIn } = context
 
   // state
   const [collections, getCollections] = useState(collectionList())

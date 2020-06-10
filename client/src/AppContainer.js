@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames'
 import Navbar from './components/Navbar';
-import userLoggedIn from './utils/userLoggedIn';
-import LoginStatus from './utils/LoginContext';
 import Collections from './components/Collections';
 import CollectionPairs from './components/CollectionPairs';
 
@@ -34,7 +32,7 @@ const AppContainer = () => {
   const classes = useStyles();
 
   // state
-  const [isLoggedIn, changeLoginStatus] = useState(userLoggedIn())
+  const [isLoggedIn, changeLoginStatus] = useState(false)
   const [shouldShowCollections, showCollections] = useState(true)
   const [collection, changeCollection] = useState({})
   const [shouldFetchCollections, changeFetchCollections] = useState(true)
@@ -45,40 +43,40 @@ const AppContainer = () => {
   }
 
   return (
-    <LoginStatus.Provider value={{ isLoggedIn }}>
-      <div className={classes.mainContainer}>
-        <Navbar 
-          changeLoginStatus={changeLoginStatus} 
-          backToCollectionsButton={!shouldShowCollections}
-          renderCollectionList={showCollections}
-          changeFetchCollections={changeFetchCollections}
+    <div className={classes.mainContainer}>
+      <Navbar 
+        changeLoginStatus={changeLoginStatus} 
+        backToCollectionsButton={!shouldShowCollections}
+        renderCollectionList={showCollections}
+        changeFetchCollections={changeFetchCollections}
+        isLoggedIn={isLoggedIn}
+      />
+      <div className={classnames({
+        [classes.baloWelcomeContainer]: true,
+        [classes.hideElement]: isLoggedIn,
+      })}>
+        <img
+          src="https://easydrawingguides.com/wp-content/uploads/2018/09/Backpack-10.png"
+          alt="balo"
+          className={classes.baloImg}
         />
-        <div className={classnames({
-          [classes.baloWelcomeContainer]: true,
-          [classes.hideElement]: isLoggedIn,
-        })}>
-          <img
-            src="https://easydrawingguides.com/wp-content/uploads/2018/09/Backpack-10.png"
-            alt="balo"
-            className={classes.baloImg}
-          />
-        </div>
-        <div className={classnames({
-          [classes.collectionContainer]: true,
-          [classes.hideElement]: !isLoggedIn
-        })}>
-          {
-            shouldShowCollections ? 
-              <Collections 
-                openCollection={openCollection}
-                shouldFetchCollections={shouldFetchCollections}
-              /> 
-              :
-              <CollectionPairs collection={collection} />
-          }
-        </div>
       </div>
-    </LoginStatus.Provider>
+      <div className={classnames({
+        [classes.collectionContainer]: true,
+        [classes.hideElement]: !isLoggedIn
+      })}>
+        {
+          shouldShowCollections ? 
+            <Collections
+              isLoggedIn={isLoggedIn}
+              openCollection={openCollection}
+              shouldFetchCollections={shouldFetchCollections}
+            /> 
+            :
+            <CollectionPairs collection={collection} />
+        }
+      </div>
+    </div>
   );
 };
 

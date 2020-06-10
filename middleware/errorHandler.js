@@ -1,5 +1,6 @@
 const errorResponse = require('../utils/errorResponse');
 
+// eslint-disable-next-line
 const errorHandler = (err, req, res, next) => {
   let error = { ...err };
   console.error('err', err);
