@@ -1,6 +1,6 @@
-# Balo API
+# Balo Learn
 
-> Backend API for Balo Learn App
+> Fullstack app for Balo Learn project
 
 ## Usage
 
