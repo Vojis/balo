@@ -12,7 +12,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Snackbar from '@material-ui/core/Snackbar';
 
 import PostAddIcon from '@material-ui/icons/PostAdd';
-import PeopleIcon from '@material-ui/icons/People';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
 import UnfoldLessIcon from '@material-ui/icons/UnfoldLess';
@@ -24,8 +23,14 @@ import CloseIcon from '@material-ui/icons/Close';
 import pairList from '../utils/pairList';
 
 const useStyles = makeStyles((theme) => ({
-  collectionName: {
+  title: {
     color: '#fff',
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 24,
+    },
+  },
+  buttonMargin: {
+    marginRight: 10,
   },
   icon: {
     color: '#fff',
@@ -33,25 +38,24 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 24,
   },
   iconButton: {
-    marginLeft: 10,
     padding: 15,
     backgroundColor: theme.colors.lightPurple,
     '&:hover': {
       backgroundColor: theme.colors.navbarPurple,
       opacity: 1,
-    }
+    },
+    [theme.breakpoints.down('xs')]: {
+      padding: 11,
+    },
   },
   noPairsContainer: {
     display: 'flex',
     alignItems: 'flex-end',
   },
-  whiteIcon: {
-    color: '#fff',
-    paddingLeft: 5,
-  },
   subtitle: {
     color: '#fff',
-    marginTop: 16,
+    opacity: .33,
+    marginTop: 24,
   },
   buttonContainer: {
     display: 'flex',
@@ -80,6 +84,10 @@ const useStyles = makeStyles((theme) => ({
   noShowButton: {
     display: 'none'
   },
+  actionButtons: {
+    textAlign: 'right', 
+    minWidth: 102,
+  }
 }))
 
 const fetchPairs = async (id) => {
@@ -220,17 +228,18 @@ const CollectionPairs = (props) => {
   return (
     <React.Fragment>
       <div className={classes.buttonContainer}>
-        <Typography variant='h4' className={classes.collectionName}>
-          {collection.name}
+        <Typography variant='h4' className={classes.title}>
+          <span className={classes.buttonMargin}>{collection.name}</span>
           <IconButton className={classes.iconButton} onClick={() => openDialog(true)}>
             <PostAddIcon className={classes.icon} />
           </IconButton>
         </Typography>
-        <span>
+        <span className={classes.actionButtons} >
           <IconButton 
             onClick={() => changeSwitchLanguage(!switchLanguage)}
             className={classnames({
               [classes.iconButton]: true,
+              [classes.buttonMargin]: true,
               [classes.noShowButton]: !pairs.length
             })}
           >
@@ -253,7 +262,6 @@ const CollectionPairs = (props) => {
         !pairs.length && (
           <Typography className={classes.noPairsContainer}>
             <span className={classes.subtitle}>You have no pairs. Connect them!</span>
-            <PeopleIcon className={classes.whiteIcon} />
           </Typography>
         )
       }

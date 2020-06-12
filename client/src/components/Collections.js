@@ -6,7 +6,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 
 import CloseIcon from '@material-ui/icons/Close';
-import FiberNewIcon from '@material-ui/icons/FiberNew';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 
 import Collection from './Collection'
@@ -16,14 +15,14 @@ import collectionList from '../utils/collectionList';
 const useStyles = makeStyles((theme) => ({
   title: {
     color: '#fff',
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 24,
+    },
   },
   subtitle: {
     color: '#fff',
+    opacity: .33,
     marginTop: 24,
-  },
-  whiteIcon: {
-    color: '#fff',
-    paddingLeft: 5,
   },
   collectionContainer: {
     marginTop: 24,
@@ -39,7 +38,10 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: theme.colors.navbarPurple,
       opacity: 1,
-    }
+    },
+    [theme.breakpoints.down('xs')]: {
+      padding: 11,
+    },
   },
   icon: {
     color: '#fff',
@@ -98,7 +100,6 @@ const Collections = ({ openCollection, shouldFetchCollections, isLoggedIn }) => 
         !collections.length && (
           <Typography className={classes.noCollectionContainer}>
             <span className={classes.subtitle}>You have no collections. Create your first one!</span>
-            <FiberNewIcon className={classes.whiteIcon} />
           </Typography>
         )
       }

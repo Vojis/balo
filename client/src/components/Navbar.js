@@ -20,11 +20,25 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.colors.navbarPurple,
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: 12,
+    [theme.breakpoints.down('xs')]: {
+      marginRight: 4,
+    }
   },
   title: {
     flexGrow: 1,
   },
+  navbarButton: {
+    [theme.breakpoints.down('xs')]: {
+      fontSize: theme.typography.xsFont
+    }
+  },
+  backToColelctionsButton: {
+    paddingRight: 5,
+    [theme.breakpoints.down('xs')]: {
+      fontSize: theme.typography.xsFont
+    }
+  }
 }));
 
 const Navbar = ({
@@ -103,24 +117,24 @@ const Navbar = ({
           <IconButton edge='start' className={classes.menuButton} color='inherit' onClick={renderCollections}>
             <LocalMallIcon />
           </IconButton>
-          <Typography variant='h6' className={classes.title}>Balo</Typography>
+          <Typography variant='h5' className={classes.title}>Balo</Typography>
           {
             backToCollectionsButton && (
-              <Button color='inherit' onClick={renderCollections}>
-                <ExitToAppIcon style={{paddingRight: 5}} /> Collections
+              <Button color='inherit' onClick={renderCollections} className={classes.navbarButton}>
+                <ExitToAppIcon className={classes.backToColelctionsButton} /> Back
               </Button>
             )
           }
           {
             !isLoggedIn && (
               <React.Fragment>
-                <Button color='inherit' onClick={() => openLoginDialog(!loginDialog)}>Login</Button>
-                <Button color='inherit' onClick={() => openSignupDialog(!signupDialog)}>Sign up</Button>
+                <Button color='inherit' onClick={() => openLoginDialog(!loginDialog)} className={classes.navbarButton}>Login</Button>
+                <Button color='inherit' onClick={() => openSignupDialog(!signupDialog)} className={classes.navbarButton}>Sign up</Button>
               </React.Fragment>
             )
           }
           { 
-            isLoggedIn && <Button color='inherit' onClick={() => baloLogOut()}>Logout</Button> 
+            isLoggedIn && <Button color='inherit' onClick={() => baloLogOut()} className={classes.navbarButton}>Logout</Button> 
           }
           <LogInDialog
             open={loginDialog}

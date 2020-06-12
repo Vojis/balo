@@ -4,6 +4,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 const theme = createMuiTheme({
   typography: {
     fontSize: 16,
+    xsFont: 14,
   },
   colors: {
     darkPurple: '#3b328f',
