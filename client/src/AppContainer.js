@@ -5,6 +5,8 @@ import Navbar from './components/Navbar';
 import Collections from './components/Collections';
 import CollectionPairs from './components/CollectionPairs';
 
+import userLoggedIn from './utils/userLoggedIn';
+
 const useStyles = makeStyles(() => ({
   mainContainer: {
     minHeight: '100vh',
@@ -32,7 +34,7 @@ const AppContainer = () => {
   const classes = useStyles();
 
   // state
-  const [isLoggedIn, changeLoginStatus] = useState(false)
+  const [isLoggedIn, changeLoginStatus] = useState(userLoggedIn())
   const [shouldShowCollections, showCollections] = useState(true)
   const [collection, changeCollection] = useState({})
   const [shouldFetchCollections, changeFetchCollections] = useState(true)
